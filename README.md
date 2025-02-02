@@ -69,3 +69,23 @@ ok      akatech/utest   0.348s
     3. **Memudahkan Refactoring:** Membantu pengembang mengubah kode tanpa merusak fungsionalitas yang ada.
     4. **Meningkatkan Kepercayaan:** Memberikan rasa aman saat mengubah atau menambahkan fitur baru.
     5. **Dokumentasi Kode:** Bertindak sebagai dokumentasi untuk bagaimana fungsi seharusnya bekerja.
+
+## SOAP
+### How To Use?
+Cek File `wsdl.go` lalu pakai function nya seperti dibawah ini
+```go
+func main() {
+	userID := "12345"
+	response, err := callSOAPService(userID)
+	if err != nil {
+		fmt.Printf("Error: %v\n", err)
+		return
+	}
+
+	fmt.Printf("User Details:\n")
+	fmt.Printf("ID: %s\n", response.User.ID)
+	fmt.Printf("First Name: %s\n", response.User.FirstName)
+	fmt.Printf("Last Name: %s\n", response.User.LastName)
+	fmt.Printf("Email: %s\n", response.User.Email)
+}
+```
