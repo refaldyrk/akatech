@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  akatech-db:
+    image: postgres:latest
+    container_name: akatech_postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: akatech
+      POSTGRES_DB: user
+    ports:
+      - "5432:5432"
+    volumes:
+      - akatech_postgres_data:/var/lib/postgresql/data
+    networks:
+      - akatech_network
+
+volumes:
+  akatech_postgres_data:
+
+networks:
+  akatech_network:
+    driver: bridge
