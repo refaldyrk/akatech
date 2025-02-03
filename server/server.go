@@ -9,6 +9,7 @@ import (
 	"context"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"log"
 )
 
 func App(ctx context.Context) *gin.Engine {
@@ -25,7 +26,7 @@ func App(ctx context.Context) *gin.Engine {
 	userRepository := repository.NewUserRepository(configBase.DB)
 
 	//Service
-	userService := service.NewUserService(userRepository)
+	userService := service.NewUserService(userRepository, configBase.Q, configBase.AMQPChannel)
 
 	//Controller
 	userController := controller.NewUserController(userService)
@@ -44,11 +45,26 @@ func App(ctx context.Context) *gin.Engine {
 
 	app.Use(cors.New(cfg))
 
-	//Webhook
-
 	apiRoutesV1 := app.Group("/api/v1")
 
 	// User
 	apiRoutesV1.POST("/user", userController.CreateUser)
+
+	msgs, err := configBase.AMQPChannel.Consume(
+		configBase.Q.Name,
+		"",
+		true,
+		false,
+		false,
+		false,
+		nil,
+	)
+
+	go func() {
+		for d := range msgs {
+			log.Printf("Received a message: %s", d.Body)
+		}
+	}()
+
 	return app
 }

@@ -89,3 +89,41 @@ func main() {
 	fmt.Printf("Email: %s\n", response.User.Email)
 }
 ```
+
+## RabbitMQ
+- Membuat Sender
+```go
+//Send Message
+	err = u.channel.PublishWithContext(context.Background(), "", u.queue.Name, false, false, amqp091.Publishing{
+		ContentType: "text/plain",
+		Body:        []byte(newUser.UserID),
+	})
+
+	if err != nil {
+		return 0, nil
+	}
+```
+- Membuat Consumer
+```go 
+msgs, err := configBase.AMQPChannel.Consume(
+		configBase.Q.Name,
+		"",
+		true,
+		false,
+		false,
+		false,
+		nil,
+	)
+
+	go func() {
+		for d := range msgs {
+			log.Printf("Received a message: %s", d.Body)
+		}
+	}()
+```
+
+Saat membuat user baru maka akan mengirimkan message baru ke RabbitMQ, dan otomatis akan di consume juga pada bersamaan\n
+Example:
+```shell
+2025/02/03 10:01:21 Received a message: cug330dp6e2sk7fqdka0
+```
