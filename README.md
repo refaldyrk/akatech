@@ -127,3 +127,10 @@ Example:
 ```shell
 2025/02/03 10:01:21 Received a message: cug330dp6e2sk7fqdka0
 ```
+
+## Dockerization
+Sudah tersedia file `Dockerfile`\n
+Dan juga untuk CI/CD ada di `.github/workflows/ci-cd.yaml`
+
+Mengapa harus Containerization?
+Containerization dalam pengembangan software memberikan manfaat seperti konsistensi lingkungan di semua tahap pengembangan, isolasi untuk menghindari konflik dependensi, portabilitas untuk menjalankan aplikasi di berbagai lingkungan, efisiensi resource karena lebih ringan dibanding VM, kemudahan scaling, serta kecepatan deployment yang lebih tinggi.
